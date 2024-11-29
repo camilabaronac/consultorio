@@ -26,8 +26,6 @@ class _UserDetailsState extends State<UserDetailsPage> {
             .where(
                 (user) => user.name.toLowerCase().contains(query.toLowerCase()))
             .toList();
-        print(itemsSearch);
-        print(query);
       });
     }
   }
@@ -122,51 +120,54 @@ class _UserDetailsState extends State<UserDetailsPage> {
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   final user = itemsSearch[index];
-                  return Container(
-                    alignment: Alignment.center,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
+                  return GestureDetector(
+                    onTap: () => print(user.name),
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Center(
+                          child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              user.name,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          const VerticalDivider(
+                            width: 2,
+                          ),
+                          Expanded(
+                            child: Text(
+                              user.id.toString(),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          const VerticalDivider(
+                            width: 2,
+                          ),
+                          Expanded(
+                            child: Text(
+                              user.phone.toString(),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          const VerticalDivider(
+                            width: 2,
+                          ),
+                          Expanded(
+                            child: Text(
+                              user.email,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      )),
                     ),
-                    child: Center(
-                        child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            user.name,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        const VerticalDivider(
-                          width: 2,
-                        ),
-                        Expanded(
-                          child: Text(
-                            user.id.toString(),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        const VerticalDivider(
-                          width: 2,
-                        ),
-                        Expanded(
-                          child: Text(
-                            user.phone.toString(),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        const VerticalDivider(
-                          width: 2,
-                        ),
-                        Expanded(
-                          child: Text(
-                            user.email,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
-                    )),
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) =>

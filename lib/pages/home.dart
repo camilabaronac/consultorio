@@ -110,7 +110,6 @@ class _HomePageState extends State<HomePage> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (_formLogInKey.currentState!.validate()) {
-                          print('Todos los campos están OK');
                           userName = controller.text;
                           Navigator.of(context).pushReplacementNamed(
                               RoutesName.add,

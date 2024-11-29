@@ -64,7 +64,8 @@ class MyApp extends StatelessWidget {
       ),
       // initialRoute: RoutesName.add,
       onGenerateRoute: AppRoutes.generateRoute,
-      home:  UserDetailsPage(users: [user,user2,user3,user,user2,user3,user,user3,user2,user2,user2,user,user3,user,user2,user3,user,user],),
+      home: HomePage(),
+      // home:  UserDetailsPage(users: [user,user2,user3,user,user2,user3,user,user3,user2,user2,user2,user,user3,user,user2,user3,user,user],),
     );
   }
 }
