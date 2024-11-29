@@ -12,6 +12,8 @@ class AddPacientPage extends StatefulWidget {
 
 class _AddPacientPageState extends State<AddPacientPage> {
   final _formAddKey = GlobalKey<FormState>();
+
+  //Controladores de texto
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final idController = TextEditingController();
@@ -22,37 +24,54 @@ class _AddPacientPageState extends State<AddPacientPage> {
   final diagnosisController = TextEditingController();
 
   DateTime? selectedBirthDate;
-  String? selectedDocument = "Cédula de ciudadanía"; // Valor inicial
+  String? selectedDocument = "Cédula de ciudadanía";
 
+  // Lista para almacenar usuarios registrados
+  final List<User> _users = [];
+
+  //Método para actualizar la información de la fecha de nacimiento que viene desde personal information
   void _updateBirthDate(DateTime birthDate) {
     setState(() {
       selectedBirthDate = birthDate;
     });
   }
 
+  //Método para actualizar la información del tipo de documento que viene desde personal information
   void _updateDocumentType(String document) {
     setState(() {
       selectedDocument = document;
     });
   }
 
+  //Método para registrar un usuario
   void _submitForm() {
     if (_formAddKey.currentState!.validate()) {
-      // Crear instancia del modelo User
-      final user = User(
-        name: nameController.text,
-        age: int.parse(ageController.text),
-        id: int.parse(idController.text),
-        email: emailController.text,
-        idType: selectedDocument!,
-        birthDate: selectedBirthDate!,
-        phone: int.parse(phoneController.text),
-        consult: consultController.text,
-        record: recordController.text,
-        diagnosis: diagnosisController.text,
-      );
+      setState(() {
+        _users.add(User(
+          name: nameController.text,
+          age: int.parse(ageController.text),
+          id: int.parse(idController.text),
+          email: emailController.text,
+          idType: selectedDocument!,
+          birthDate: selectedBirthDate!,
+          phone: int.parse(phoneController.text),
+          consult: consultController.text,
+          record: recordController.text,
+          diagnosis: diagnosisController.text,
+        ));
+      });
 
-      showAlertDialog(context, nameController.text, user);
+      showAlertDialog(context, nameController.text, _users);
+
+      // Limpia los campos después de agregar
+      nameController.clear();
+      emailController.clear();
+      idController.clear();
+      phoneController.clear();
+      ageController.clear();
+      consultController.clear();
+      recordController.clear();
+      diagnosisController.clear();
     }
   }
 
@@ -81,17 +100,19 @@ class _AddPacientPageState extends State<AddPacientPage> {
     );
   }
 
-  showAlertDialog(BuildContext context, String name, User user) {
+  showAlertDialog(BuildContext context, String name, List<User> user) {
     // set up the button
     Widget okButton = TextButton(
       child: const Text("Aceptar"),
       onPressed: () {
-        print('Navega');
-      // Navegar a la página de detalles del usuario
+        // Cerrar el diálogo de alerta antes de navegar
+        Navigator.pop(context);
+
+        // Navegar a la página de detalles del usuario
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => UserDetailsPage(user: user),
+            builder: (context) => UserDetailsPage(users: user),
           ),
         );
       },
