@@ -1,22 +1,33 @@
+import 'package:agenda_clinica/data/datasources/user_local_data_source.dart';
+import 'package:agenda_clinica/data/gateway_implementation/gateway_implementation.dart';
 import 'package:agenda_clinica/domain/models/user.dart';
 import 'package:agenda_clinica/config/navigation/routes.dart';
+import 'package:agenda_clinica/domain/usecases/delete_user.dart';
+import 'package:agenda_clinica/domain/usecases/edit_user.dart';
+import 'package:agenda_clinica/domain/usecases/save_user.dart';
 import 'package:agenda_clinica/ui/pages/home.dart';
-import 'package:agenda_clinica/ui/pages/user_details_page.dart';
-import 'package:agenda_clinica/ui/pages/user_list_page.dart';
-import 'package:agenda_clinica/config/providers/user_provider.dart';
+import 'package:agenda_clinica/ui/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  final userLocalDataSource = UserLocalDataSource();
+  final userRepository = UserGatewayImpl(userLocalDataSource);
+
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(
+            create: (_) => UserProvider(
+                  saveUserUseCase: SaveUser(userRepository),
+                  editUserUseCase: EditUser(userRepository),
+                  deleteUserUseCase: DeleteUser(userRepository),
+                )),
       ],
       child: const MyApp(),
     ),
-   );
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -27,7 +38,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     User user = User(
       registerDate: DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now()),
-      
       name: 'Camila',
       age: 14,
       id: '12345678',
@@ -42,7 +52,6 @@ class MyApp extends StatelessWidget {
 
     User user2 = User(
       registerDate: DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now()),
-      
       name: 'Mariana',
       age: 14,
       id: '12345678',
@@ -68,7 +77,6 @@ class MyApp extends StatelessWidget {
       record: 'sdfghj',
       diagnosis: 'dfghj',
     );
-
 
     return MaterialApp(
       theme: ThemeData(

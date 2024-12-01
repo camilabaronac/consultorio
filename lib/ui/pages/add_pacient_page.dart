@@ -1,7 +1,7 @@
 import 'package:agenda_clinica/domain/models/user.dart';
 import 'package:agenda_clinica/ui/pages/user_list_page.dart';
 import 'package:agenda_clinica/config/constants/labels.dart';
-import 'package:agenda_clinica/config/providers/user_provider.dart';
+import 'package:agenda_clinica/ui/providers/user_provider.dart';
 import 'package:agenda_clinica/ui/widgets/personal_information.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -55,7 +55,7 @@ class _AddPacientPageState extends State<AddPacientPage> {
       String formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(now);
       setState(() {
         userProvider = Provider.of<UserProvider>(context, listen: false);
-        userProvider.addUser(
+        userProvider.saveUser(
           User(
             name: nameController.text,
             registerDate: formattedDate,

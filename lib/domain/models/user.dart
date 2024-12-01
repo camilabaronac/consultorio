@@ -1,8 +1,8 @@
 class User {
   final String name;
+  final String id;
   final String? registerDate;
   final int age;
-  final String id;
   final String idType;
   final String email;
   final DateTime birthDate;

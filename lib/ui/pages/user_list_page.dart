@@ -1,7 +1,7 @@
 import 'package:agenda_clinica/domain/models/user.dart';
 import 'package:agenda_clinica/config/navigation/routes_name.dart';
 import 'package:agenda_clinica/config/constants/labels.dart';
-import 'package:agenda_clinica/config/providers/user_provider.dart';
+import 'package:agenda_clinica/ui/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
