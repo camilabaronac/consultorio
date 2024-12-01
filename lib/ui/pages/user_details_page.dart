@@ -1,13 +1,12 @@
 import 'dart:math';
 
-import 'package:agenda_clinica/domain/models/user.dart';
-import 'package:agenda_clinica/config/navigation/routes_name.dart';
+import 'package:agenda_clinica/ui/providers/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class UserDetailsPage extends StatefulWidget {
-  final User user;
 
-  const UserDetailsPage({super.key, required this.user});
+  const UserDetailsPage({super.key});
 
   @override
   State<UserDetailsPage> createState() => _UserDetailsPageState();
@@ -24,13 +23,21 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     currentAvatar = random.nextInt(5) + 1;
   }
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    final user = userProvider.selectedUser;
+
+    if (user == null) {
+      return const Scaffold(
+        body: Center(child: Text('No se seleccionó ningún usuario')),
+      );
+    }
+
     return Scaffold(
         // appBar: AppBar(
         //   actions: [
@@ -56,7 +63,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                 Image.asset('assets/images/avatar$currentAvatar.png',
                     width: 200),
                 SizedBox(width: 30),
-                Text(widget.user.name)
+                Text(user.name)
               ],
             ),
           ),

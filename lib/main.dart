@@ -16,17 +16,15 @@ void main() {
   final userRepository = UserGatewayImpl(userLocalDataSource);
 
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-            create: (_) => UserProvider(
-                  saveUserUseCase: SaveUser(userRepository),
-                  editUserUseCase: EditUser(userRepository),
-                  deleteUserUseCase: DeleteUser(userRepository),
-                )),
-      ],
-      child: const MyApp(),
+    ChangeNotifierProvider(
+      create: (context) => UserProvider(
+        saveUserUseCase: SaveUser(userRepository),
+        editUserUseCase: EditUser(userRepository),
+        deleteUserUseCase: DeleteUser(userRepository),
+      ),
+      child: MyApp(),
     ),
+    
   );
 }
 

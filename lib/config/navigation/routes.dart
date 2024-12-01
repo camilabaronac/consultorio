@@ -16,9 +16,7 @@ class AppRoutes {
         return MaterialPageRoute(builder: (context) => const AddPacientPage());
       case RoutesName.user:
         return MaterialPageRoute(
-            builder: (context) => UserDetailsPage(
-                  user: settings.arguments as User,
-                ));
+            builder: (context) => UserDetailsPage());
       case RoutesName.listUser:
         return MaterialPageRoute(
             builder: (context) => const UserListPage());
