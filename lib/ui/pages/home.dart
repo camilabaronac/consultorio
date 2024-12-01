@@ -1,4 +1,5 @@
-import 'package:agenda_clinica/navigation/routes_name.dart';
+import 'package:agenda_clinica/config/navigation/routes_name.dart';
+import 'package:agenda_clinica/config/constants/labels.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -51,12 +52,12 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  'Consultorio Dr. Francisco J. Barona',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                 Text(
+                  home['title']!,
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                 ),
                 Text(
-                  'Historias clínicas',
+                  home['subtitle']!,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
               ],
@@ -85,11 +86,11 @@ class _HomePageState extends State<HomePage> {
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Por favor ingresar la contraseña';
+                          return home['pswd']!;
                         }
 
                         if (value != '0517') {
-                          return 'Contraseña incorrecta';
+                          return home['subtitle']!;
                         }
 
                         return null;
@@ -97,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                       decoration: InputDecoration(
                         border: defaultInputBorder,
                         label: Text(
-                          'Ingresa la contraseña',
+                          home['hintPswd']!,
                           style: defaultInputLabelTheme,
                         ),
                       ),
@@ -116,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                               arguments: userName);
                         }
                       },
-                      child: const Text('Ingresar'),
+                      child: Text(home['button']!),
                     ),
                   ),
                 ],

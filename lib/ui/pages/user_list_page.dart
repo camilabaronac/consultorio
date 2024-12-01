@@ -1,43 +1,56 @@
-import 'package:agenda_clinica/models/user.dart';
+import 'package:agenda_clinica/domain/models/user.dart';
+import 'package:agenda_clinica/config/navigation/routes_name.dart';
+import 'package:agenda_clinica/config/constants/labels.dart';
+import 'package:agenda_clinica/config/providers/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class UserDetailsPage extends StatefulWidget {
-  final List<User> users;
-
-  const UserDetailsPage({super.key, required this.users});
+class UserListPage extends StatefulWidget {
+  const UserListPage({super.key});
 
   @override
-  State<UserDetailsPage> createState() => _UserDetailsState();
+  State<UserListPage> createState() => _UserDetailsState();
 }
 
-class _UserDetailsState extends State<UserDetailsPage> {
+class _UserDetailsState extends State<UserListPage> {
   TextEditingController editingController = TextEditingController();
 
   List<User> itemsSearch = [];
 
-  void filterSearchResults(String query) {
+  void filterSearchResults(String query, List<User> users) {
     if (query.isEmpty) {
       setState(() {
-        itemsSearch = widget.users;
+        itemsSearch = users;
       });
     } else {
       setState(() {
-        itemsSearch = widget.users
-            .where(
-                (user) => user.name.toLowerCase().contains(query.toLowerCase()))
-            .toList();
+        itemsSearch = users.where((user) {
+          final lowerCaseQuery = query.toLowerCase();
+          return user.name.toLowerCase().contains(lowerCaseQuery) ||
+              user.id.toString().contains(lowerCaseQuery);
+        }).toList();
       });
     }
   }
 
   @override
   void initState() {
-    itemsSearch = widget.users;
+    // La lista inicial se llenará cuando se construya por primera vez
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final users = context.read<UserProvider>().users;
+      setState(() {
+        itemsSearch = users;
+      });
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+
+    final userProvider = context.watch<UserProvider>(); // Escuchar cambios
+    final users = userProvider.users;
+
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -53,17 +66,17 @@ class _UserDetailsState extends State<UserDetailsPage> {
           children: [
             TextField(
               onChanged: (value) {
-                filterSearchResults(value);
+                filterSearchResults(value, users);
               },
               controller: editingController,
-              decoration: const InputDecoration(
-                  labelText: "Search",
-                  hintText: "Search",
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
+              decoration: InputDecoration(
+                  labelText: search,
+                  hintText: search,
+                  prefixIcon: const Icon(Icons.search),
+                  border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0)))),
             ),
-            const SizedBox(height:30),
+            const SizedBox(height: 30),
             Container(
               alignment: Alignment.center,
               height: 50,
@@ -71,41 +84,51 @@ class _UserDetailsState extends State<UserDetailsPage> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: const Row(
+              child: Row(
                 children: [
                   Expanded(
                     child: Text(
-                      'Nombre',
+                      userList['registerDate']!,
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  VerticalDivider(
+                  const VerticalDivider(
                     width: 2,
                   ),
                   Expanded(
                     child: Text(
-                      'N° Documento de identidad',
+                      userList['name']!,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  VerticalDivider(
+                  const VerticalDivider(
                     width: 2,
                   ),
                   Expanded(
                     child: Text(
-                      'Teléfono',
+                      userList['documentNumber']!,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const VerticalDivider(
+                    width: 2,
+                  ),
+                  Expanded(
+                    child: Text(
+                      userList['phone']!,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  VerticalDivider(
+                  const VerticalDivider(
                     width: 2,
                   ),
                   Expanded(
                     child: Text(
-                      'Correo',
+                      userList['email']!,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
@@ -121,7 +144,8 @@ class _UserDetailsState extends State<UserDetailsPage> {
                 itemBuilder: (BuildContext context, int index) {
                   final user = itemsSearch[index];
                   return GestureDetector(
-                    onTap: () => print(user.name),
+                    onTap: () => Navigator.of(context)
+                        .pushReplacementNamed(RoutesName.user, arguments: user),
                     child: Container(
                       alignment: Alignment.center,
                       height: 50,
@@ -132,6 +156,15 @@ class _UserDetailsState extends State<UserDetailsPage> {
                       child: Center(
                           child: Row(
                         children: [
+                          Expanded(
+                            child: Text(
+                              user.registerDate.toString(),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          const VerticalDivider(
+                            width: 2,
+                          ),
                           Expanded(
                             child: Text(
                               user.name,

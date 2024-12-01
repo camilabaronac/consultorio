@@ -1,7 +1,11 @@
-import 'package:agenda_clinica/models/user.dart';
-import 'package:agenda_clinica/pages/user_details_page.dart';
-import 'package:agenda_clinica/widgets/personal_information.dart';
+import 'package:agenda_clinica/domain/models/user.dart';
+import 'package:agenda_clinica/ui/pages/user_list_page.dart';
+import 'package:agenda_clinica/config/constants/labels.dart';
+import 'package:agenda_clinica/config/providers/user_provider.dart';
+import 'package:agenda_clinica/ui/widgets/personal_information.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class AddPacientPage extends StatefulWidget {
   const AddPacientPage({super.key});
@@ -27,7 +31,8 @@ class _AddPacientPageState extends State<AddPacientPage> {
   String? selectedDocument = "Cédula de ciudadanía";
 
   // Lista para almacenar usuarios registrados
-  final List<User> _users = [];
+  late UserProvider userProvider;
+
 
   //Método para actualizar la información de la fecha de nacimiento que viene desde personal information
   void _updateBirthDate(DateTime birthDate) {
@@ -44,24 +49,30 @@ class _AddPacientPageState extends State<AddPacientPage> {
   }
 
   //Método para registrar un usuario
-  void _submitForm() {
+  void _saveUser() {
     if (_formAddKey.currentState!.validate()) {
+      DateTime now = DateTime.now();
+      String formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(now);
       setState(() {
-        _users.add(User(
-          name: nameController.text,
-          age: int.parse(ageController.text),
-          id: int.parse(idController.text),
-          email: emailController.text,
-          idType: selectedDocument!,
-          birthDate: selectedBirthDate!,
-          phone: int.parse(phoneController.text),
-          consult: consultController.text,
-          record: recordController.text,
-          diagnosis: diagnosisController.text,
-        ));
+        userProvider = Provider.of<UserProvider>(context, listen: false);
+        userProvider.addUser(
+          User(
+            name: nameController.text,
+            registerDate: formattedDate,
+            age: int.parse(ageController.text),
+            id: idController.text,
+            email: emailController.text,
+            idType: selectedDocument!,
+            birthDate: selectedBirthDate!,
+            phone: int.parse(phoneController.text),
+            consult: consultController.text,
+            record: recordController.text,
+            diagnosis: diagnosisController.text,
+          ),
+        );
       });
 
-      showAlertDialog(context, nameController.text, _users);
+      showAlertDialog(context, nameController.text, userProvider);
 
       // Limpia los campos después de agregar
       nameController.clear();
@@ -85,14 +96,17 @@ class _AddPacientPageState extends State<AddPacientPage> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextFormField(
-          validator: (value) => value!.isEmpty ? 'Campo requerido' : null,
+          validator: (value) => value!.isEmpty ? textForm : null,
           controller: controller,
-          style: Theme.of(context).textTheme.labelMedium,
+          style: Theme.of(context).textTheme.labelSmall,
           decoration: InputDecoration(
             border: InputBorder.none,
             label: Text(
               textInput,
-              style: const TextStyle(color: Colors.black),
+              softWrap: true,
+              style: const TextStyle(
+                color: Color.fromARGB(255, 185, 183, 183),
+              ),
             ),
           ),
         ),
@@ -100,7 +114,7 @@ class _AddPacientPageState extends State<AddPacientPage> {
     );
   }
 
-  showAlertDialog(BuildContext context, String name, List<User> user) {
+  showAlertDialog(BuildContext context, String name, UserProvider user) {
     // set up the button
     Widget okButton = TextButton(
       child: const Text("Aceptar"),
@@ -112,7 +126,7 @@ class _AddPacientPageState extends State<AddPacientPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => UserDetailsPage(users: user),
+            builder: (context) => UserListPage(),
           ),
         );
       },
@@ -120,7 +134,7 @@ class _AddPacientPageState extends State<AddPacientPage> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: const Text("Registro exitoso"),
+      title: Text(addPacient['alertTitle']!),
       content: Text(
           'La paciente $name ha sido registrada en nuestra base de datos.'),
       actions: [
@@ -147,9 +161,9 @@ class _AddPacientPageState extends State<AddPacientPage> {
           fontWeight: FontWeight.bold,
           fontSize: 30,
         ),
-        title: const Text(
-          'Historia Clínica',
-          style: TextStyle(color: Colors.black),
+        title: Text(
+          addPacient['clinicHistory']!,
+          style: const TextStyle(color: Colors.black),
         ),
       ),
       body: SingleChildScrollView(
@@ -178,30 +192,31 @@ class _AddPacientPageState extends State<AddPacientPage> {
                       height: 30,
                     ),
                     textFormLarge(
-                        consultController, 'Motivo de consulta', context),
+                        consultController, addPacient['consult'], context),
                     const SizedBox(
                       height: 30,
                     ),
-                    textFormLarge(recordController, 'Antecedentes', context),
+                    textFormLarge(
+                        recordController, addPacient['record'], context),
                     const SizedBox(
                       height: 30,
                     ),
-                    textFormLarge(diagnosisController, 'Diagnóstico', context),
+                    textFormLarge(
+                        diagnosisController, addPacient['diagnosis'], context),
                     Container(
                       margin: const EdgeInsets.only(top: 32, bottom: 48),
                       width: 394,
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          _submitForm();
+                          _saveUser();
                         },
                         style: ElevatedButton.styleFrom(
-                          // backgroundColor: WeinFluColors.brandPrimaryColor,
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                           ),
                         ),
-                        child: const Text('Guardar'),
+                        child: Text(save),
                       ),
                     ),
                   ],

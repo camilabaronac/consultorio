@@ -1,21 +1,27 @@
+import 'package:agenda_clinica/config/constants/labels.dart';
 import 'package:flutter/material.dart';
 
 class TextForm extends StatefulWidget {
   final TextEditingController controller;
   final String text;
   final VoidCallback? functionTap;
+  final FocusNode? focusNode;
+  final bool? readOnly;
 
   const TextForm(
       {super.key,
       required this.controller,
       required this.text,
-      this.functionTap});
+      this.functionTap,
+      this.readOnly,
+      this.focusNode});
 
   @override
   State<TextForm> createState() => _TextFormState();
 }
 
 class _TextFormState extends State<TextForm> {
+  
   @override
   Widget build(BuildContext context) {
     const defaultContainerInputDecoration = BoxDecoration(
@@ -24,7 +30,7 @@ class _TextFormState extends State<TextForm> {
 
     const defaultInputLabelTheme = TextStyle(
       fontSize: 13,
-      color: Colors.black,
+      color: Color.fromARGB(255, 185, 183, 183),
       fontWeight: FontWeight.normal,
     );
 
@@ -34,8 +40,9 @@ class _TextFormState extends State<TextForm> {
       child: Container(
         decoration: defaultContainerInputDecoration,
         child: TextFormField(
-          validator: (value) => value!.isEmpty ? 'Campo requerido' : null,
+          validator: (value) => value!.isEmpty ? textForm : null,
           controller: widget.controller,
+          readOnly: widget.readOnly ?? false,
           style: Theme.of(context).textTheme.labelLarge,
           decoration: InputDecoration(
             border: borderInput,
@@ -45,6 +52,7 @@ class _TextFormState extends State<TextForm> {
               style: defaultInputLabelTheme,
             ),
           ),
+          focusNode: widget.focusNode,
           onTap: widget.functionTap,
         ),
       ),

@@ -1,7 +1,8 @@
 class User {
   final String name;
+  final String? registerDate;
   final int age;
-  final int id;
+  final String id;
   final String idType;
   final String email;
   final DateTime birthDate;
@@ -20,6 +21,7 @@ class User {
     required this.phone,
     required this.consult,
     required this.record,
-    required this.diagnosis
+    required this.diagnosis,
+    this.registerDate,
   });
 }

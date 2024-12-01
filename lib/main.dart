@@ -1,13 +1,22 @@
-import 'package:agenda_clinica/models/user.dart';
-import 'package:agenda_clinica/navigation/routes.dart';
-import 'package:agenda_clinica/navigation/routes_name.dart';
-import 'package:agenda_clinica/pages/user_details_page.dart';
+import 'package:agenda_clinica/domain/models/user.dart';
+import 'package:agenda_clinica/config/navigation/routes.dart';
+import 'package:agenda_clinica/ui/pages/home.dart';
+import 'package:agenda_clinica/ui/pages/user_details_page.dart';
+import 'package:agenda_clinica/ui/pages/user_list_page.dart';
+import 'package:agenda_clinica/config/providers/user_provider.dart';
 import 'package:flutter/material.dart';
-
-import 'pages/home.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+      ],
+      child: const MyApp(),
+    ),
+   );
 }
 
 class MyApp extends StatelessWidget {
@@ -17,9 +26,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     User user = User(
+      registerDate: DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now()),
+      
       name: 'Camila',
       age: 14,
-      id: 12345678,
+      id: '12345678',
       idType: 'Cédula de ciudadanía',
       email: 'c@b.com',
       birthDate: DateTime(200, 1, 10),
@@ -30,9 +41,11 @@ class MyApp extends StatelessWidget {
     );
 
     User user2 = User(
+      registerDate: DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now()),
+      
       name: 'Mariana',
       age: 14,
-      id: 12345678,
+      id: '12345678',
       idType: 'Cédula de ciudadanía',
       email: 'c@b.com',
       birthDate: DateTime(200, 1, 10),
@@ -43,9 +56,10 @@ class MyApp extends StatelessWidget {
     );
 
     User user3 = User(
+      registerDate: DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now()),
       name: 'Jose',
       age: 14,
-      id: 12345678,
+      id: '12345678',
       idType: 'Cédula de ciudadanía',
       email: 'c@b.com',
       birthDate: DateTime(200, 1, 10),
@@ -65,7 +79,8 @@ class MyApp extends StatelessWidget {
       // initialRoute: RoutesName.add,
       onGenerateRoute: AppRoutes.generateRoute,
       home: HomePage(),
-      // home:  UserDetailsPage(users: [user,user2,user3,user,user2,user3,user,user3,user2,user2,user2,user,user3,user,user2,user3,user,user],),
+      // home: UserDetailsPage(user: user),
+      // home:  UserListPage(users: [user,user2,user3,user,user2,user3,user,user3,user2,user2,user2,user,user3,user,user2,user3,user,user],),
     );
   }
 }
