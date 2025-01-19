@@ -1,11 +1,12 @@
 import 'dart:math';
 
 import 'package:agenda_clinica/ui/providers/user_provider.dart';
+import 'package:agenda_clinica/ui/widgets/user_details/user_details_card.dart';
+import 'package:agenda_clinica/ui/widgets/user_details/user_details_consult.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class UserDetailsPage extends StatefulWidget {
-
   const UserDetailsPage({super.key});
 
   @override
@@ -15,6 +16,13 @@ class UserDetailsPage extends StatefulWidget {
 class _UserDetailsPageState extends State<UserDetailsPage> {
   final random = Random();
   var currentAvatar = 2;
+
+  final textStyleBold =
+      const TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
+
+  final textStyleNormal = const TextStyle(
+    fontSize: 18,
+  );
 
   final List<Color> colors = [
     Color.fromARGB(255, 255, 255, 255),
@@ -39,33 +47,24 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
     }
 
     return Scaffold(
-        // appBar: AppBar(
-        //   actions: [
-        //     // ElevatedButton(
-        //     //     onPressed: () => Navigator.popAndPushNamed(context, RoutesName.listUser),
-        //     //     child: const Text('atras')),
-        //   ],
-
-        // ),
-        backgroundColor: Colors.pink.shade50,
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [...colors],
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Row(
-              children: [
-                Image.asset('assets/images/avatar$currentAvatar.png',
-                    width: 200),
-                SizedBox(width: 30),
-                Text(user.name)
-              ],
-            ),
+        backgroundColor: Colors.grey.shade200,
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: UserDetailsCard(
+                  user: user,
+                ),
+              ),
+              const SizedBox(
+                width: 30,
+              ),
+              Expanded(
+                child: UserDetailsConsult(user: user),
+              )
+            ],
           ),
         ));
   }

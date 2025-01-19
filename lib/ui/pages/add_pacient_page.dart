@@ -3,8 +3,8 @@ import 'package:agenda_clinica/ui/pages/user_list_page.dart';
 import 'package:agenda_clinica/config/constants/labels.dart';
 import 'package:agenda_clinica/ui/providers/user_provider.dart';
 import 'package:agenda_clinica/ui/widgets/personal_information.dart';
+import 'package:agenda_clinica/ui/widgets/text_form.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class AddPacientPage extends StatefulWidget {
@@ -52,13 +52,12 @@ class _AddPacientPageState extends State<AddPacientPage> {
   void _saveUser() {
     if (_formAddKey.currentState!.validate()) {
       DateTime now = DateTime.now();
-      String formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(now);
       setState(() {
         userProvider = Provider.of<UserProvider>(context, listen: false);
         userProvider.saveUser(
           User(
             name: nameController.text,
-            registerDate: formattedDate,
+            registerDate: now,
             age: int.parse(ageController.text),
             id: idController.text,
             email: emailController.text,
@@ -69,6 +68,7 @@ class _AddPacientPageState extends State<AddPacientPage> {
             record: recordController.text,
             diagnosis: diagnosisController.text,
           ),
+          // User(name: 'Camila', age: 24, id: '1010136709', idType: 'Cédula de Ciudadania', email: 'c@b.com', birthDate: DateTime.now(), phone: 3123452342, consult: 'Motivo de consulta', record: 'Antecedentes', diagnosis: 'Diagnostico')
         );
       });
 
@@ -86,34 +86,6 @@ class _AddPacientPageState extends State<AddPacientPage> {
     }
   }
 
-  Widget textFormLarge(controller, textInput, context) {
-    return Container(
-      height: 200,
-      decoration: BoxDecoration(
-          border: Border.all(),
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(5.0)),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: TextFormField(
-          validator: (value) => value!.isEmpty ? textForm : null,
-          controller: controller,
-          style: Theme.of(context).textTheme.labelSmall,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            label: Text(
-              textInput,
-              softWrap: true,
-              style: const TextStyle(
-                color: Color.fromARGB(255, 185, 183, 183),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   showAlertDialog(BuildContext context, String name, UserProvider user) {
     // set up the button
     Widget okButton = TextButton(
@@ -126,7 +98,7 @@ class _AddPacientPageState extends State<AddPacientPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => UserListPage(),
+            builder: (context) => const UserListPage(),
           ),
         );
       },
@@ -156,7 +128,7 @@ class _AddPacientPageState extends State<AddPacientPage> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 80,
-        backgroundColor: Colors.pink.shade50,
+        backgroundColor: const Color.fromARGB(255, 252, 194, 194),
         titleTextStyle: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 30,
@@ -191,18 +163,18 @@ class _AddPacientPageState extends State<AddPacientPage> {
                     const SizedBox(
                       height: 30,
                     ),
-                    textFormLarge(
-                        consultController, addPacient['consult'], context),
+                    TextForm(
+                        controller: consultController, text: addPacient['consult']!, isLarge: true ),
                     const SizedBox(
                       height: 30,
                     ),
-                    textFormLarge(
-                        recordController, addPacient['record'], context),
+                    TextForm(
+                        controller: recordController, text: addPacient['record']!, isLarge: true,),
                     const SizedBox(
                       height: 30,
                     ),
-                    textFormLarge(
-                        diagnosisController, addPacient['diagnosis'], context),
+                    TextForm(
+                        controller: diagnosisController, text: addPacient['diagnosis']!, isLarge: true,),
                     Container(
                       margin: const EdgeInsets.only(top: 32, bottom: 48),
                       width: 394,
@@ -215,8 +187,9 @@ class _AddPacientPageState extends State<AddPacientPage> {
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                           ),
+                        backgroundColor: const Color.fromARGB(255, 252, 194, 194),
                         ),
-                        child: Text(save),
+                        child: Text(save, style: const TextStyle(color:Colors.black),),
                       ),
                     ),
                   ],

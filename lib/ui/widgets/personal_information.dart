@@ -1,6 +1,7 @@
 import 'package:agenda_clinica/config/constants/labels.dart';
 import 'package:agenda_clinica/ui/widgets/text_form.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class PersonalInformation extends StatefulWidget {
   final TextEditingController nameController;
@@ -69,13 +70,19 @@ class _PersonalInformationState extends State<PersonalInformation> {
       lastDate: DateTime.now(),
     );
     if (picked != null && picked != selectedDate) {
+
       setState(() {
         selectedDate = picked;
-        // Actualiza el controlador con la fecha seleccionada
-        birthDateController.text =
-            "${picked.day}/${picked.month}/${picked.year}";
+
+        // Formatear la fecha a "dd/MM/yyyy"
+      final formattedDate = DateFormat('dd/MM/yyyy').format(selectedDate);
+
+      // Actualiza el controlador con la fecha formateada
+      birthDateController.text = formattedDate;
+
       });
       _focusNode.unfocus();
+      print(selectedDate);
       widget.onBirthDateSelected(selectedDate);
     }
   }

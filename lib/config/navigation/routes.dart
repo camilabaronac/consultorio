@@ -1,9 +1,7 @@
-import 'package:agenda_clinica/domain/models/user.dart';
 import 'package:agenda_clinica/ui/pages/add_pacient_page.dart';
 import 'package:agenda_clinica/ui/pages/home.dart';
 import 'package:agenda_clinica/ui/pages/user_details_page.dart';
 import 'package:agenda_clinica/ui/pages/user_list_page.dart';
-import 'package:agenda_clinica/ui/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:agenda_clinica/config/navigation/routes_name.dart';
 

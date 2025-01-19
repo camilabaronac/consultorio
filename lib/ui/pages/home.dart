@@ -14,8 +14,11 @@ class _HomePageState extends State<HomePage> {
   final controller = TextEditingController();
   late String userName;
 
-  final defaultContainerInputDecoration = const BoxDecoration(
-      color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(5)));
+  final defaultContainerInputDecoration =  BoxDecoration(
+    color: Colors.white,
+    borderRadius: const BorderRadius.all(Radius.circular(5)),
+    border: Border.all(color: Colors.black, width: 1),
+  );
 
   final activeContainerInputDecoration = BoxDecoration(
       color: Colors.white,
@@ -36,7 +39,6 @@ class _HomePageState extends State<HomePage> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Colors.pink.shade50,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -52,9 +54,10 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                 Text(
+                Text(
                   home['title']!,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 30),
                 ),
                 Text(
                   home['subtitle']!,
@@ -77,7 +80,6 @@ class _HomePageState extends State<HomePage> {
                     decoration: defaultContainerInputDecoration,
                     padding: const EdgeInsets.only(left: 24),
                     child: TextFormField(
-                      
                       obscureText: true,
                       controller: controller,
                       style: Theme.of(context).textTheme.labelLarge,
@@ -109,6 +111,11 @@ class _HomePageState extends State<HomePage> {
                     width: 394,
                     height: 50,
                     child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color.fromARGB(255, 252, 194, 194),
+                        ),
+                      ),
                       onPressed: () {
                         if (_formLogInKey.currentState!.validate()) {
                           userName = controller.text;
@@ -117,7 +124,10 @@ class _HomePageState extends State<HomePage> {
                               arguments: userName);
                         }
                       },
-                      child: Text(home['button']!),
+                      child: Text(
+                        home['button']!,
+                        style: const TextStyle(color: Colors.black),
+                      ),
                     ),
                   ),
                 ],

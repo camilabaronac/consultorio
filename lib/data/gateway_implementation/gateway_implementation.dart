@@ -16,6 +16,7 @@ class UserGatewayImpl implements UserGateway {
         email: user.email,
         phone: user.phone,
         age: user.age,
+        registerDate: user.registerDate,
         idType: user.idType,
         birthDate: user.birthDate,
         consult: user.consult,
@@ -32,6 +33,7 @@ class UserGatewayImpl implements UserGateway {
         phone: user.phone,
         age: user.age,
         idType: user.idType,
+        registerDate: user.registerDate,
         birthDate: user.birthDate,
         consult: user.consult,
         record: user.record,
@@ -57,6 +59,7 @@ class UserGatewayImpl implements UserGateway {
             birthDate: model.birthDate,
             consult: model.consult,
             record: model.record,
+            registerDate: model.registerDate,
             diagnosis: model.diagnosis))
         .toList();
   }

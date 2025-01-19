@@ -49,26 +49,44 @@ class _UserDetailsState extends State<UserListPage> {
   Widget build(BuildContext context) {
     final userProvider = context.watch<UserProvider>(); // Escuchar cambios
     final users = userProvider.users;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     if (users.isEmpty) {
       return Scaffold(
-        appBar: AppBar(
-          actions: [
-            ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('atras')),
-          ],
-        ),
-        backgroundColor: Colors.pink.shade50,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('No hay pacientes registradas', style: TextStyle(fontSize: 30),),
-              const SizedBox(height: 40,),
-              ElevatedButton(onPressed: (){
-                Navigator.pushNamed(context, RoutesName.add);
-              }, child: const Text('Registrar paciente'))
+              Container(
+                width: 400,
+                child: Image.asset(
+                  'assets/images/no-registry-1.png',
+                  width: screenWidth * 0.9, // 80% del ancho de la pantalla
+                  height: screenHeight * 0.2, // 40% de la altura de la pantalla
+                ),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              const Text(
+                'Aún no hay pacientes registradas',
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, RoutesName.add);
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    const Color.fromARGB(255, 252, 194, 194),
+                  ),
+                ),
+                child: const Text('Registrar paciente', style: TextStyle(color: Colors.black)),
+              )
             ],
           ),
         ),
@@ -76,12 +94,12 @@ class _UserDetailsState extends State<UserListPage> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          // actions: [
-          //   ElevatedButton(
-          //       onPressed: () => Navigator.pop(context),
-          //       child: const Text('atras')),
-          // ],
-        ),
+            // actions: [
+            //   ElevatedButton(
+            //       onPressed: () => Navigator.pop(context),
+            //       child: const Text('atras')),
+            // ],
+            ),
         backgroundColor: Colors.pink.shade50,
         body: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -123,7 +141,7 @@ class _UserDetailsState extends State<UserListPage> {
                       child: Text(
                         userList['name']!,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                     const VerticalDivider(
@@ -143,7 +161,7 @@ class _UserDetailsState extends State<UserListPage> {
                       child: Text(
                         userList['phone']!,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                     const VerticalDivider(
@@ -153,7 +171,7 @@ class _UserDetailsState extends State<UserListPage> {
                       child: Text(
                         userList['email']!,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],

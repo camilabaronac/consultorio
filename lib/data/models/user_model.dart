@@ -14,6 +14,7 @@ class UserModel extends User {
     required super.consult,
     required super.record,
     required super.diagnosis,
+    required super.registerDate
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -28,7 +29,7 @@ class UserModel extends User {
       consult: json['consult'],
       record: json['record'],
       diagnosis: json['diagnosis'],
-
+      registerDate: json['registerDate'],
     );
   }
 
@@ -43,7 +44,8 @@ class UserModel extends User {
       'birthDate': birthDate,
       'consult': consult,
       'record': record,
-      'diagnosis': diagnosis
+      'diagnosis': diagnosis,
+      'registerDate': registerDate,
     };
   }
 }

@@ -1,7 +1,7 @@
 class User {
   final String name;
   final String id;
-  final String? registerDate;
+  final DateTime registerDate;
   final int age;
   final String idType;
   final String email;
@@ -22,6 +22,10 @@ class User {
     required this.consult,
     required this.record,
     required this.diagnosis,
-    this.registerDate,
+    required this.registerDate,
   });
+
+    String get formattedDate => '${birthDate.day}/${birthDate.month}/${birthDate.year}';
+    String get formattedRegisterDate => '${registerDate.day}/${birthDate.month}/${birthDate.year}';
+
 }
