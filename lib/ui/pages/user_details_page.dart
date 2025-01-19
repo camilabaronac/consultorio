@@ -26,8 +26,8 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
   );
 
   final List<Color> colors = [
-    Color.fromARGB(255, 255, 255, 255),
-    Color.fromARGB(255, 255, 254, 254)
+    const Color.fromARGB(255, 255, 255, 255),
+    const Color.fromARGB(255, 255, 254, 254)
   ];
 
   @override
@@ -44,9 +44,15 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
     final historyProvider = Provider.of<HistoryProvider>(context);
     final history = historyProvider.selectedHistory;
 
-    if (user == null) {
+    if (user == null ) {
       return const Scaffold(
         body: Center(child: Text('No se seleccionó ningún usuario')),
+      );
+    }
+
+    if (history == null) {
+      return const Scaffold(
+        body: Center(child: Text('No se encontró el historial')),
       );
     }
     //aca
@@ -66,7 +72,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                 width: 30,
               ),
               Expanded(
-                child: UserDetailsConsult(historial: history!),
+                child: UserDetailsConsult(historial: history),
               )
             ],
           ),

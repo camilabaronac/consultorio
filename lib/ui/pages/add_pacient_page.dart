@@ -52,44 +52,38 @@ class _AddPacientPageState extends State<AddPacientPage> {
 
   //Método para registrar un usuario
   Future<void> _saveUser() async {
-    DateTime now = DateTime.now();
+  if (_formAddKey.currentState!.validate()) {
     userProvider = Provider.of<UserProvider>(context, listen: false);
     historyProvider = Provider.of<HistoryProvider>(context, listen: false);
 
-    // Check for existing user before saving
-    if (_formAddKey.currentState!.validate()) {
-      DateTime now = DateTime.now();
-      setState(() {
-        userProvider = Provider.of<UserProvider>(context, listen: false);
-        historyProvider = Provider.of<HistoryProvider>(context, listen: false);
-        userProvider.saveUser(
-          User(
-            name: nameController.text,
-            age: int.parse(ageController.text),
-            id: idController.text,
-            email: emailController.text,
-            idType: selectedDocument!,
-            birthDate: selectedBirthDate!,
-            phone: int.parse(phoneController.text),
-          ),
-        );
-        historyProvider.createHistoryRecord(
-          History(
-            id: '${idController.text}-id',
-            userId: idController.text,
-            consult: consultController.text,
-            record: recordController.text,
-            diagnosis: diagnosisController.text,
-            registerDate: now,
-          ),
-        );
-      });
+    final user = User(
+      name: nameController.text,
+      age: int.parse(ageController.text),
+      id: idController.text,
+      email: emailController.text,
+      idType: selectedDocument!,
+      birthDate: selectedBirthDate!,
+      phone: int.parse(phoneController.text),
+    );
 
+    final history = History(
+      id: '${idController.text}-id',
+      userId: idController.text,
+      consult: consultController.text,
+      record: recordController.text,
+      diagnosis: diagnosisController.text,
+      registerDate: DateTime.now(),
+    );
+
+    try {
+      await userProvider.saveUser(user);
+      await historyProvider.createHistoryRecord(history);
       showAlertDialog(context, nameController.text, userProvider);
-
-      // Limpia los campos después de agregar
+    } catch (e) {
+      print('Error al guardar usuario o historial: $e');
     }
   }
+}
 
   void cleanForm() {
     nameController.clear();

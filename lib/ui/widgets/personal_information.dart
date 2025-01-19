@@ -82,7 +82,6 @@ class _PersonalInformationState extends State<PersonalInformation> {
 
       });
       _focusNode.unfocus();
-      print(selectedDate);
       widget.onBirthDateSelected(selectedDate);
     }
   }

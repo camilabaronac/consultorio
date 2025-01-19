@@ -19,26 +19,23 @@ class HistoryProvider extends ChangeNotifier {
     required this.updateHistoryRecordUsecase,
   });
 
-  late final List<History> _histories = List.generate(
-    10,
-    (index) => History(
-      id: '123456789',
-      userId: '123456789',
-      registerDate: DateTime.now(),
-      consult:
-          '"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',
-      diagnosis:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      record:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    ),
-  );
+  final List<History> _histories = [];
+
+  History? _historySelected;
 
   List<History> get histories => _histories;
-  History? get selectedHistory => _histories.first;
+  History? get selectedHistory => _historySelected;
 
-  void selectHistory(History history) {
-    _histories.first = history;
+  void selectHistory(User user) {
+    try {
+      _historySelected = _histories.firstWhere(
+        (history) => history.userId == user.id,
+      );
+      notifyListeners();
+    } catch (error) {
+      print('Error al guardar el usuario: $error');
+    }
+
     notifyListeners();
   }
 
@@ -54,6 +51,7 @@ class HistoryProvider extends ChangeNotifier {
   }
 
   Future<void> createHistoryRecord(History history) async {
+    print('createHistoryRecord $history');
     try {
       await createHistoryRecordUsecase(history);
       _histories.add(history);

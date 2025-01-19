@@ -1,6 +1,7 @@
 import 'package:agenda_clinica/domain/models/user.dart';
 import 'package:agenda_clinica/config/navigation/routes_name.dart';
 import 'package:agenda_clinica/config/constants/labels.dart';
+import 'package:agenda_clinica/ui/providers/history_provider.dart';
 import 'package:agenda_clinica/ui/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -49,6 +50,11 @@ class _UserDetailsState extends State<UserListPage> {
   Widget build(BuildContext context) {
     final userProvider = context.watch<UserProvider>(); // Escuchar cambios
     final users = userProvider.users;
+
+    final historyProvider = context.watch<HistoryProvider>(); // Escuchar cambios
+    final histories = historyProvider.histories;
+
+
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -58,7 +64,7 @@ class _UserDetailsState extends State<UserListPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
+              SizedBox(
                 width: 400,
                 child: Image.asset(
                   'assets/images/no-registry-1.png',
@@ -184,11 +190,12 @@ class _UserDetailsState extends State<UserListPage> {
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
                     final user = itemsSearch[index];
+                    final history = histories.firstWhere((element) => element.userId == user.id);
                     return GestureDetector(
                       onTap: () {
                         final user = itemsSearch[index];
                         Provider.of<UserProvider>(context, listen: false).selectUser(user);
-
+                        Provider.of<HistoryProvider>(context, listen: false).selectHistory(user);
                         Navigator.of(context).pushNamed(RoutesName.user);
                       },
                       child: Container(
@@ -204,7 +211,7 @@ class _UserDetailsState extends State<UserListPage> {
                             //aca
                             Expanded(
                               child: Text(
-                                DateTime.now().toString(),
+                                history.formattedRegisterDate,
                                 textAlign: TextAlign.center,
                               ),
                             ),
