@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:agenda_clinica/ui/providers/history_provider.dart';
 import 'package:agenda_clinica/ui/providers/user_provider.dart';
 import 'package:agenda_clinica/ui/widgets/user_details/user_details_card.dart';
 import 'package:agenda_clinica/ui/widgets/user_details/user_details_consult.dart';
@@ -40,12 +41,15 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
     final userProvider = Provider.of<UserProvider>(context);
     final user = userProvider.selectedUser;
 
+    final historyProvider = Provider.of<HistoryProvider>(context);
+    final history = historyProvider.selectedHistory;
+
     if (user == null) {
       return const Scaffold(
         body: Center(child: Text('No se seleccionó ningún usuario')),
       );
     }
-
+    //aca
     return Scaffold(
         backgroundColor: Colors.grey.shade200,
         body: Padding(
@@ -62,7 +66,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                 width: 30,
               ),
               Expanded(
-                child: UserDetailsConsult(user: user),
+                child: UserDetailsConsult(historial: history!),
               )
             ],
           ),

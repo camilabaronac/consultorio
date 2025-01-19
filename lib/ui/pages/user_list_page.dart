@@ -187,8 +187,7 @@ class _UserDetailsState extends State<UserListPage> {
                     return GestureDetector(
                       onTap: () {
                         final user = itemsSearch[index];
-                        Provider.of<UserProvider>(context, listen: false)
-                            .selectUser(user);
+                        Provider.of<UserProvider>(context, listen: false).selectUser(user);
 
                         Navigator.of(context).pushNamed(RoutesName.user);
                       },
@@ -202,9 +201,10 @@ class _UserDetailsState extends State<UserListPage> {
                         child: Center(
                             child: Row(
                           children: [
+                            //aca
                             Expanded(
                               child: Text(
-                                user.formattedRegisterDate,
+                                DateTime.now().toString(),
                                 textAlign: TextAlign.center,
                               ),
                             ),

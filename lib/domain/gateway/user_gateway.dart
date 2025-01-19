@@ -5,5 +5,4 @@ abstract class UserGateway {
   Future<void> editUser(User user);
   Future<void> deleteUser(String userId);
   Future<List<User>> getUsers();
-  Future<User?> getUserById(String userId);
 }

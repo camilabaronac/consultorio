@@ -21,9 +21,4 @@ class UserLocalDataSource {
     return _users;
   }
 
-  Future<UserModel?> getUserById(String userId) async {
-    final model = _users.firstWhere((user) => user.id == userId);
-    return model; 
-  }
-
 }

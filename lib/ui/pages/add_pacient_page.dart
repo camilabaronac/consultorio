@@ -1,6 +1,8 @@
+import 'package:agenda_clinica/domain/models/history.dart';
 import 'package:agenda_clinica/domain/models/user.dart';
 import 'package:agenda_clinica/ui/pages/user_list_page.dart';
 import 'package:agenda_clinica/config/constants/labels.dart';
+import 'package:agenda_clinica/ui/providers/history_provider.dart';
 import 'package:agenda_clinica/ui/providers/user_provider.dart';
 import 'package:agenda_clinica/ui/widgets/personal_information.dart';
 import 'package:agenda_clinica/ui/widgets/text_form.dart';
@@ -32,6 +34,7 @@ class _AddPacientPageState extends State<AddPacientPage> {
 
   // Lista para almacenar usuarios registrados
   late UserProvider userProvider;
+  late HistoryProvider historyProvider;
 
   //Método para actualizar la información de la fecha de nacimiento que viene desde personal information
   void _updateBirthDate(DateTime birthDate) {
@@ -51,25 +54,33 @@ class _AddPacientPageState extends State<AddPacientPage> {
   Future<void> _saveUser() async {
     DateTime now = DateTime.now();
     userProvider = Provider.of<UserProvider>(context, listen: false);
+    historyProvider = Provider.of<HistoryProvider>(context, listen: false);
 
     // Check for existing user before saving
     if (_formAddKey.currentState!.validate()) {
       DateTime now = DateTime.now();
       setState(() {
         userProvider = Provider.of<UserProvider>(context, listen: false);
+        historyProvider = Provider.of<HistoryProvider>(context, listen: false);
         userProvider.saveUser(
           User(
             name: nameController.text,
-            registerDate: now,
             age: int.parse(ageController.text),
             id: idController.text,
             email: emailController.text,
             idType: selectedDocument!,
             birthDate: selectedBirthDate!,
             phone: int.parse(phoneController.text),
+          ),
+        );
+        historyProvider.createHistoryRecord(
+          History(
+            id: '${idController.text}-id',
+            userId: idController.text,
             consult: consultController.text,
             record: recordController.text,
             diagnosis: diagnosisController.text,
+            registerDate: now,
           ),
         );
       });

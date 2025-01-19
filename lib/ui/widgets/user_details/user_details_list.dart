@@ -9,7 +9,6 @@ class UserDetailsList extends StatefulWidget {
 }
 
 class _UserDetailsListState extends State<UserDetailsList> {
-  final ScrollController _firstController = ScrollController();
 
   @override
   Widget build(BuildContext context) {

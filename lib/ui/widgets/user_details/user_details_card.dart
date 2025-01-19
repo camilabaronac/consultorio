@@ -67,7 +67,7 @@ class _UserDetailsCardState extends State<UserDetailsCard> {
                             style: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold)),
                         Text(
-                       '${widget.user.id}',
+                       widget.user.id,
                       style: const TextStyle(fontSize: 16),
                     ),
                       ],

@@ -1,10 +1,12 @@
-import 'package:agenda_clinica/domain/models/user.dart';
+import 'package:agenda_clinica/domain/models/history.dart';
 import 'package:flutter/material.dart';
 
-class UserDetailsConsult extends StatefulWidget {
-  const UserDetailsConsult({super.key, required this.user});
+//aca
 
-  final User user;
+class UserDetailsConsult extends StatefulWidget {
+  const UserDetailsConsult({super.key, required this.historial});
+
+  final History historial;
 
   @override
   State<UserDetailsConsult> createState() => _UserDetailsConsultState();
@@ -61,7 +63,7 @@ class _UserDetailsConsultState extends State<UserDetailsConsult> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text('Fecha de registro: ', style: textStyleBold),
-                              Text(widget.user.formattedRegisterDate, style: textStyleNormal),
+                              Text(widget.historial.formattedRegisterDate, style: textStyleNormal),
                             ],
                           ),
                           const SizedBox(height: 20),
@@ -74,9 +76,9 @@ class _UserDetailsConsultState extends State<UserDetailsConsult> {
                           ),
                           const Divider(),
                           const SizedBox(height: 10),
-                          Text(widget.user.consult, style: textStyleNormal),
+                          Text(widget.historial.consult, style: textStyleNormal),
                           const SizedBox(height: 20),
-                          Text(widget.user.consult, style: textStyleNormal),
+                          Text(widget.historial.consult, style: textStyleNormal),
                           const SizedBox(height: 20),
                           Row(
                             children: [
@@ -87,7 +89,7 @@ class _UserDetailsConsultState extends State<UserDetailsConsult> {
                           ),
                           const Divider(),
                           const SizedBox(height: 10),
-                          Text(widget.user.record, style: textStyleNormal),
+                          Text(widget.historial.record, style: textStyleNormal),
                           const SizedBox(height: 20),
                           Row(
                             children: [
@@ -98,7 +100,7 @@ class _UserDetailsConsultState extends State<UserDetailsConsult> {
                           ),
                           const Divider(),
                           const SizedBox(height: 10),
-                          Text(widget.user.diagnosis, style: textStyleNormal),
+                          Text(widget.historial.diagnosis, style: textStyleNormal),
                           const SizedBox(height: 20),
                         ],
                       ),

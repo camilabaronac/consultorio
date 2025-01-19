@@ -16,12 +16,9 @@ class UserGatewayImpl implements UserGateway {
         email: user.email,
         phone: user.phone,
         age: user.age,
-        registerDate: user.registerDate,
         idType: user.idType,
         birthDate: user.birthDate,
-        consult: user.consult,
-        record: user.record,
-        diagnosis: user.diagnosis));
+        ));
   }
 
   @override
@@ -33,11 +30,8 @@ class UserGatewayImpl implements UserGateway {
         phone: user.phone,
         age: user.age,
         idType: user.idType,
-        registerDate: user.registerDate,
         birthDate: user.birthDate,
-        consult: user.consult,
-        record: user.record,
-        diagnosis: user.diagnosis));
+        ));
   }
 
   @override
@@ -57,28 +51,9 @@ class UserGatewayImpl implements UserGateway {
             age: model.age,
             idType: model.idType,
             birthDate: model.birthDate,
-            consult: model.consult,
-            record: model.record,
-            registerDate: model.registerDate,
-            diagnosis: model.diagnosis))
+            ))
         .toList();
   }
   
-  @override
-  Future<User?> getUserById(String userId) async {
-    final model = await dataSource.getUserById(userId);
-    if (model == null) return null;
-    return User(
-        id: model.id,
-        name: model.name,
-        email: model.email,
-        phone: model.phone,
-        age: model.age,
-        idType: model.idType,
-        birthDate: model.birthDate,
-        consult: model.consult,
-        record: model.record,
-        registerDate: model.registerDate,
-        diagnosis: model.diagnosis);
-  }
+  
 }
