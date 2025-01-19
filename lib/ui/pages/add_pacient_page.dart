@@ -33,7 +33,6 @@ class _AddPacientPageState extends State<AddPacientPage> {
   // Lista para almacenar usuarios registrados
   late UserProvider userProvider;
 
-
   //Método para actualizar la información de la fecha de nacimiento que viene desde personal information
   void _updateBirthDate(DateTime birthDate) {
     setState(() {
@@ -49,7 +48,11 @@ class _AddPacientPageState extends State<AddPacientPage> {
   }
 
   //Método para registrar un usuario
-  void _saveUser() {
+  Future<void> _saveUser() async {
+    DateTime now = DateTime.now();
+    userProvider = Provider.of<UserProvider>(context, listen: false);
+
+    // Check for existing user before saving
     if (_formAddKey.currentState!.validate()) {
       DateTime now = DateTime.now();
       setState(() {
@@ -68,57 +71,86 @@ class _AddPacientPageState extends State<AddPacientPage> {
             record: recordController.text,
             diagnosis: diagnosisController.text,
           ),
-          // User(name: 'Camila', age: 24, id: '1010136709', idType: 'Cédula de Ciudadania', email: 'c@b.com', birthDate: DateTime.now(), phone: 3123452342, consult: 'Motivo de consulta', record: 'Antecedentes', diagnosis: 'Diagnostico')
         );
       });
 
       showAlertDialog(context, nameController.text, userProvider);
 
       // Limpia los campos después de agregar
-      nameController.clear();
-      emailController.clear();
-      idController.clear();
-      phoneController.clear();
-      ageController.clear();
-      consultController.clear();
-      recordController.clear();
-      diagnosisController.clear();
     }
   }
 
-  showAlertDialog(BuildContext context, String name, UserProvider user) {
-    // set up the button
-    Widget okButton = TextButton(
-      child: const Text("Aceptar"),
-      onPressed: () {
-        // Cerrar el diálogo de alerta antes de navegar
-        Navigator.pop(context);
+  void cleanForm() {
+    nameController.clear();
+    emailController.clear();
+    idController.clear();
+    phoneController.clear();
+    ageController.clear();
+    consultController.clear();
+    recordController.clear();
+    diagnosisController.clear();
+  }
 
-        // Navegar a la página de detalles del usuario
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const UserListPage(),
-          ),
-        );
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
+  void showAlertDialog(BuildContext context, String name, UserProvider user) {
+    // set up the AlertDialogs
+    AlertDialog successAlert = AlertDialog(
       title: Text(addPacient['alertTitle']!),
       content: Text(
           'La paciente $name ha sido registrada en nuestra base de datos.'),
       actions: [
-        okButton,
+        TextButton(
+          child: const Text("Aceptar"),
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const UserListPage(),
+              ),
+            );
+            cleanForm();
+          },
+        )
       ],
     );
 
-    // show the dialog
+    AlertDialog userExistsAlert = AlertDialog(
+      title: Text(pacientExists['alertTitle']!),
+      content: Text(pacientExists['alertContent']!),
+      actions: [
+        TextButton(
+          child: Text(pacientExists['yes']!),
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const UserListPage(),
+              ),
+            );
+            cleanForm();
+          },
+        ),
+        TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(pacientExists['no']!)),
+      ],
+    );
+
+    // show the dialog based on userProvider.saveStatus
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return alert;
+        if (user.saveStatus == UserSaveStatus.success) {
+          return successAlert;
+        } else if (user.saveStatus == UserSaveStatus.userExists) {
+          return userExistsAlert;
+        } else {
+          // Handle other potential errors (optional)
+          return const Text('Unexpected error!');
+        }
       },
     );
   }
@@ -164,17 +196,25 @@ class _AddPacientPageState extends State<AddPacientPage> {
                       height: 30,
                     ),
                     TextForm(
-                        controller: consultController, text: addPacient['consult']!, isLarge: true ),
+                        controller: consultController,
+                        text: addPacient['consult']!,
+                        isLarge: true),
                     const SizedBox(
                       height: 30,
                     ),
                     TextForm(
-                        controller: recordController, text: addPacient['record']!, isLarge: true,),
+                      controller: recordController,
+                      text: addPacient['record']!,
+                      isLarge: true,
+                    ),
                     const SizedBox(
                       height: 30,
                     ),
                     TextForm(
-                        controller: diagnosisController, text: addPacient['diagnosis']!, isLarge: true,),
+                      controller: diagnosisController,
+                      text: addPacient['diagnosis']!,
+                      isLarge: true,
+                    ),
                     Container(
                       margin: const EdgeInsets.only(top: 32, bottom: 48),
                       width: 394,
@@ -187,9 +227,13 @@ class _AddPacientPageState extends State<AddPacientPage> {
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                           ),
-                        backgroundColor: const Color.fromARGB(255, 252, 194, 194),
+                          backgroundColor:
+                              const Color.fromARGB(255, 252, 194, 194),
                         ),
-                        child: Text(save, style: const TextStyle(color:Colors.black),),
+                        child: Text(
+                          save,
+                          style: const TextStyle(color: Colors.black),
+                        ),
                       ),
                     ),
                   ],

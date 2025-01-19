@@ -51,3 +51,10 @@ Map<String, String> addPacient = {
   'email': 'Correo',
   'alertTitle': "Registro exitoso",
 };
+
+Map<String, String> pacientExists = {
+  'alertTitle': "El paciente ya existe!",
+  'alertContent': "El paciente ya se encuentra registrado en la base de datos, ¿Desea ingresar a su registro?",
+  'yes': 'Aceptar',
+  'no': 'Cancelar',
+};

@@ -63,4 +63,22 @@ class UserGatewayImpl implements UserGateway {
             diagnosis: model.diagnosis))
         .toList();
   }
+  
+  @override
+  Future<User?> getUserById(String userId) async {
+    final model = await dataSource.getUserById(userId);
+    if (model == null) return null;
+    return User(
+        id: model.id,
+        name: model.name,
+        email: model.email,
+        phone: model.phone,
+        age: model.age,
+        idType: model.idType,
+        birthDate: model.birthDate,
+        consult: model.consult,
+        record: model.record,
+        registerDate: model.registerDate,
+        diagnosis: model.diagnosis);
+  }
 }

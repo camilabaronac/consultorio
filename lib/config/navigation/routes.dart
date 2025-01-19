@@ -1,5 +1,6 @@
 import 'package:agenda_clinica/ui/pages/add_pacient_page.dart';
 import 'package:agenda_clinica/ui/pages/home.dart';
+import 'package:agenda_clinica/ui/pages/intro_page.dart';
 import 'package:agenda_clinica/ui/pages/user_details_page.dart';
 import 'package:agenda_clinica/ui/pages/user_list_page.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +15,13 @@ class AppRoutes {
         return MaterialPageRoute(builder: (context) => const AddPacientPage());
       case RoutesName.user:
         return MaterialPageRoute(
-            builder: (context) => UserDetailsPage());
+            builder: (context) => const UserDetailsPage());
       case RoutesName.listUser:
         return MaterialPageRoute(
             builder: (context) => const UserListPage());
+      case RoutesName.intro:
+        return MaterialPageRoute(
+            builder: (context) => const IntroPage());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

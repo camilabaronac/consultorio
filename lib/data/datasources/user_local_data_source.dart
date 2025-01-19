@@ -20,4 +20,10 @@ class UserLocalDataSource {
   Future<List<UserModel>> getUsers() async {
     return _users;
   }
+
+  Future<UserModel?> getUserById(String userId) async {
+    final model = _users.firstWhere((user) => user.id == userId);
+    return model; 
+  }
+
 }

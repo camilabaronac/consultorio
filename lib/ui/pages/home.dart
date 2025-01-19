@@ -120,8 +120,8 @@ class _HomePageState extends State<HomePage> {
                         if (_formLogInKey.currentState!.validate()) {
                           userName = controller.text;
                           Navigator.of(context).pushReplacementNamed(
-                              RoutesName.listUser,
-                              arguments: userName);
+                              RoutesName.intro,
+                             );
                         }
                       },
                       child: Text(

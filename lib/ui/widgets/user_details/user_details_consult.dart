@@ -11,115 +11,105 @@ class UserDetailsConsult extends StatefulWidget {
 }
 
 class _UserDetailsConsultState extends State<UserDetailsConsult> {
+  TextStyle textStyleBold =
+      const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+
+  TextStyle textStyleNormal =
+      const TextStyle(fontSize: 15, fontWeight: FontWeight.normal);
+
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverFillRemaining(
-          hasScrollBody: false,
-          child: Container(
-            width: 400,
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                color: Colors.white),
-            child: Padding(
-              padding: const EdgeInsets.all(50),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 50,
-                          decoration:  BoxDecoration(
-                            color: Colors.pink.shade50,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Consulta médica',
+          style: textStyleBold,
+        ),
+        shape: ShapeBorder.lerp(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          0,
+        ),
+        backgroundColor: Colors.pink.shade50,
+      ),
+      body: CustomScrollView(
+        slivers: [
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Container(
+              width: 400,
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  color: Colors.white),
+              child: Padding(
+                padding: const EdgeInsets.all(50),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text('Fecha de registro: ', style: textStyleBold),
+                              Text(widget.user.formattedRegisterDate, style: textStyleNormal),
+                            ],
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Row(
-                              children: [
-                                const Icon(Icons.medical_services),
-                                const SizedBox(width: 10),
-                                const Text('Consulta médica',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold)),
-                                const Spacer(),
-                                Text(widget.user.formattedRegisterDate.toString(),
-                                    style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold)),
-                              ],
-                            ),
+                          const SizedBox(height: 20),
+                          Row(
+                            children: [
+                              const Icon(Icons.medical_services),
+                              const SizedBox(width: 10),
+                              Text('Mótivo de consulta', style: textStyleBold),
+                            ],
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        const Text('Mótivo de consulta',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                        const Divider(),
-                        const SizedBox(height: 10),
-                        Text(widget.user.consult,
-                            style: const TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.normal)),
-                        const SizedBox(height: 20),
-  
-                        Text(widget.user.consult,
-                            style: const TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.normal)),
-                        const SizedBox(height: 20),
-                        const Text('Antecedentes',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                        const Divider(),
-                        const SizedBox(height: 10),
-                        Text(widget.user.record,
-                            style: const TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.normal)),
-                        const SizedBox(height: 20),
-                        const Text('Diagnostico',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                        const Divider(),
-                        const SizedBox(height: 10),
-                        Text(widget.user.diagnosis,
-                            style: const TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.normal)),
-                        const SizedBox(height: 20),
-                      ],
+                          const Divider(),
+                          const SizedBox(height: 10),
+                          Text(widget.user.consult, style: textStyleNormal),
+                          const SizedBox(height: 20),
+                          Text(widget.user.consult, style: textStyleNormal),
+                          const SizedBox(height: 20),
+                          Row(
+                            children: [
+                              const Icon(Icons.medical_services),
+                              const SizedBox(width: 10),
+                              Text('Antecedentes', style: textStyleBold),
+                            ],
+                          ),
+                          const Divider(),
+                          const SizedBox(height: 10),
+                          Text(widget.user.record, style: textStyleNormal),
+                          const SizedBox(height: 20),
+                          Row(
+                            children: [
+                              const Icon(Icons.medical_services),
+                              const SizedBox(width: 10),
+                              Text('Diagnostico', style: textStyleBold),
+                            ],
+                          ),
+                          const Divider(),
+                          const SizedBox(height: 10),
+                          Text(widget.user.diagnosis, style: textStyleNormal),
+                          const SizedBox(height: 20),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
-
-// const SizedBox(height: 10),
-//                   const Text(
-//                     'Consultar datos del usuario',
-//                     style: TextStyle(
-//                         fontSize: 20, fontWeight: FontWeight.bold),
-//                   ),
-//                   const SizedBox(height: 10),
-//                   const Text(
-//                     'Ingrese el número de identificación del usuario',
-//                     style: TextStyle(
-//                         fontSize: 15, fontWeight: FontWeight.normal),
-//                   ),
-//                   const SizedBox(height: 10),
-//                   TextField(
-//                     decoration: const InputDecoration(
-//                       border: OutlineInputBorder(),
-//                       labelText: 'Número de identificación',
-//                     ),
-//                   ),

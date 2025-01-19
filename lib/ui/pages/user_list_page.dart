@@ -204,7 +204,7 @@ class _UserDetailsState extends State<UserListPage> {
                           children: [
                             Expanded(
                               child: Text(
-                                user.registerDate.toString(),
+                                user.formattedRegisterDate,
                                 textAlign: TextAlign.center,
                               ),
                             ),
